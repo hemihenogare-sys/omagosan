@@ -47,7 +47,7 @@ button{font:inherit;color:inherit}
 .hero{position:relative;min-height:min(100svh,880px);display:flex;align-items:flex-end;overflow:hidden;background:#000}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 38%}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.45) 48%,rgba(0,0,0,.05) 75%),linear-gradient(0deg,var(--bg) 0%,rgba(11,11,12,0) 30%)}
-@media (max-width:700px){.hero img{object-position:58% 30%}.hero::after{background:linear-gradient(0deg,var(--bg) 6%,rgba(0,0,0,.7) 46%,rgba(0,0,0,.1) 80%)}}
+@media (max-width:700px){.hero img{object-position:80% 35%}.hero::after{background:linear-gradient(0deg,var(--bg) 6%,rgba(0,0,0,.7) 46%,rgba(0,0,0,.1) 80%)}}
 .hero .wrap{position:relative;z-index:2;width:100%;padding-block:120px 72px}
 .hero .kicker{font-size:13px;letter-spacing:.24em;color:var(--warm);margin-bottom:22px;font-weight:700}
 .hero h1{font-size:clamp(34px,6.4vw,72px);line-height:1.45;font-weight:800}
@@ -60,6 +60,7 @@ button{font:inherit;color:inherit}
 .time{padding-block:96px 40px;text-align:center}
 .time p.big{font-family:var(--mincho);font-weight:700;font-size:clamp(22px,3.6vw,36px);line-height:1.8}
 .time p.big em{font-style:normal;color:var(--warm)}
+.nb{display:inline-block}
 .time p.small{margin-top:22px;color:var(--sub);font-size:15px}
 .years{display:flex;justify-content:center;gap:clamp(6px,2vw,16px);margin-top:36px}
 .years span{width:clamp(46px,11vw,72px);aspect-ratio:1;border-radius:50%;border:1px solid var(--warm);display:flex;align-items:center;justify-content:center;font-family:var(--mincho);font-weight:700;color:var(--warm);font-size:clamp(13px,2.4vw,17px)}
@@ -184,7 +185,7 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 </section>
 
 <section class="time"><div class="wrap">
-  <p class="big">いっしょに、はしゃいでくれる時間は<br>思っているより、ずっと<em>短い</em>。</p>
+  <p class="big"><span class="nb">いっしょに、</span><span class="nb">はしゃいでくれる時間は</span><br><span class="nb">思っているより、</span><span class="nb">ずっと<em>短い</em>。</span></p>
   <p class="small">5歳から10歳。手をつないで、同じ目線で笑い合える「ゴールデンタイム」は、だいたい5年です。</p>
   <div class="years" aria-hidden="true"><span>5歳</span><span>6歳</span><span>7歳</span><span>8歳</span><span>9歳</span></div>
 </div></section>
@@ -240,16 +241,22 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 <script>
 var YIELD = 4, PERK = 2; // 想定利回り年4%のうち、年2%分を体験の特典に（イメージ）
 var PHOTOS = {
-  hero:{f:'hero.jpg', by:'Ekaterina Shakharova', u:'https://unsplash.com/photos/L4nwL3195U0'},
-  laugh:{f:'laugh.jpg', by:'Rachel Spina', u:'https://unsplash.com/photos/xx4OtYOQWf0'},
-  slide:{f:'slide.jpg', by:'National Cancer Institute', u:'https://unsplash.com/photos/YttV1GZuCDo', wide:true},
-  garden:{f:'garden.jpg', by:'Isaac Quesada', u:'https://unsplash.com/photos/FiIgXyC3t84'},
-  beach:{f:'beach.jpg', by:'yara machado', u:'https://unsplash.com/photos/7fsPrDdB4OA'},
-  selfiegp:{f:'selfie-gp.jpg', by:'Vitaly Gariev', u:'https://unsplash.com/photos/Ul4CxTdRG_A', wide:true},
-  fishing:{f:'fishing.jpg', by:'Federico Giampieri', u:'https://unsplash.com/photos/R0lftflMYPw'},
-  baking:{f:'baking.jpg', by:'Shaylyn', u:'https://unsplash.com/photos/cH96jUFttQI', wide:true},
-  sparkler:{f:'sparkler.jpg', by:'Warren', u:'https://unsplash.com/photos/kMRMcUcO81M'},
-  selfiegm:{f:'selfie-gm.jpg', by:'Vitaly Gariev', u:'https://unsplash.com/photos/gOgETQMNNgY', wide:true}
+  // すべて画像生成AIで作ったイメージ（photos/ にないものは文字の枠で表示）
+  hero:{f:'hero.jpg', ai:true},
+  laugh:{f:'laugh.jpg', ai:true},
+  slide:{f:'slide.jpg', ai:true, wide:true},
+  garden:{f:'garden.jpg', ai:true},
+  beach:{f:'beach.jpg', ai:true},
+  selfiegp:{f:'selfie-gp.jpg', ai:true, wide:true},
+  fishing:{f:'fishing.jpg', ai:true},
+  baking:{f:'baking.jpg', ai:true, wide:true},
+  sparkler:{f:'sparkler.jpg', ai:true},
+  selfiegm:{f:'selfie-gm.jpg', ai:true, wide:true},
+  stars:{f:'stars.jpg', ai:true},
+  para:{f:'para.jpg', ai:true},
+  sports:{f:'sports.jpg', ai:true},
+  craft:{f:'craft.jpg', ai:true, wide:true},
+  gourmet:{f:'gourmet.jpg', ai:true, wide:true}
 };
 // who: g = おばあちゃん目線（同じ目線で孫とやりたいこと） / k = おまごさん目線（孫がやりたいこと）
 var EXP = [
@@ -262,11 +269,11 @@ var EXP = [
  {id:'fishing', t:'はじめての釣り', who:'g', cat:'outdoor', amt:30, ph:'fishing', v:'「引いてる、引いてる！」', d:'釣れるまで、並んでゆっくり話せる。釣れた瞬間は、ふたりで大さわぎ。', perk:'釣り堀・海釣り公園の利用券と、道具のレンタル'},
  {id:'japan', t:'全都道府県を、いっしょに制覇', who:'g', cat:'travel', amt:110, ph:'selfiegp', v:'「次は、どこ行く？」', d:'毎年ひとつずつ、地図をぬりつぶす。行った先で、ふたりで自撮り。', perk:'全国の提携ホテルの宿泊割引（毎年1県ずつ）'},
  {id:'tea', t:'アフタヌーンティーで、女子会', who:'g', cat:'gourmet', amt:20, ph:'selfiegm', v:'「今日は、女子会ね」', d:'ちょっと背のびして、ホテルのお茶会へ。話題は、学校のこと、好きな人のこと。', perk:'提携ホテルのアフタヌーンティー 2人分の割引'},
- {id:'stars', t:'星空を、いっしょに眺める', who:'k', cat:'outdoor', amt:80, ph:null, v:'「あれが、北極星？」', d:'星がよく見えるキャンプ場で、寝ころんで空を見上げる。', perk:'星がよく見えるグランピング施設の宿泊割引'},
- {id:'para', t:'パラグライダーで、空から絶景', who:'g', cat:'travel', amt:110, ph:null, v:'「ばあば、空とんでる！」', d:'地球の大きさを、いっしょに感じる。一生、話のたねになる日。', perk:'タンデムフライト体験の割引'},
- {id:'sports', t:'スタジアムで、いっしょに応援', who:'k', cat:'event', amt:70, ph:null, v:'「いけー！」', d:'おじいちゃんとも、現地で。ゴールの瞬間は、ハイタッチ。', perk:'プロスポーツの観戦チケット 2人分の割引'},
- {id:'craft', t:'伝統工芸や歴史を、教えてあげる', who:'g', cat:'craft', amt:30, ph:null, v:'「ばあば、先生みたい」', d:'陶芸や江戸切子の体験で、おばあちゃんが「先生」になれる日。', perk:'陶芸・江戸切子などの体験教室 ペア参加券'},
- {id:'gourmet', t:'ご当地グルメを、半分こ', who:'g', cat:'gourmet', amt:50, ph:null, v:'「これ、半分こしよ」', d:'行った先で、いちばんおいしいものを。ふたりで食べると、もっとおいしい。', perk:'提携ホテルに泊まったときの、ご当地グルメ券'}
+ {id:'stars', t:'星空を、いっしょに眺める', who:'k', cat:'outdoor', amt:80, ph:'stars', v:'「あれが、北極星？」', d:'星がよく見えるキャンプ場で、寝ころんで空を見上げる。', perk:'星がよく見えるグランピング施設の宿泊割引'},
+ {id:'para', t:'パラグライダーで、空から絶景', who:'g', cat:'travel', amt:110, ph:'para', v:'「ばあば、空とんでる！」', d:'地球の大きさを、いっしょに感じる。一生、話のたねになる日。', perk:'タンデムフライト体験の割引'},
+ {id:'sports', t:'スタジアムで、いっしょに応援', who:'k', cat:'event', amt:70, ph:'sports', v:'「いけー！」', d:'おじいちゃんとも、現地で。ゴールの瞬間は、ハイタッチ。', perk:'プロスポーツの観戦チケット 2人分の割引'},
+ {id:'craft', t:'伝統工芸や歴史を、教えてあげる', who:'g', cat:'craft', amt:30, ph:'craft', v:'「ばあば、先生みたい」', d:'陶芸や江戸切子の体験で、おばあちゃんが「先生」になれる日。', perk:'陶芸・江戸切子などの体験教室 ペア参加券'},
+ {id:'gourmet', t:'ご当地グルメを、半分こ', who:'g', cat:'gourmet', amt:50, ph:'gourmet', v:'「これ、半分こしよ」', d:'行った先で、いちばんおいしいものを。ふたりで食べると、もっとおいしい。', perk:'提携ホテルに泊まったときの、ご当地グルメ券'}
 ];
 var CATS = {travel:'旅行・おでかけ', outdoor:'自然・アウトドア', craft:'つくる・学ぶ', gourmet:'グルメ', event:'イベント・あそび'};
 var WHO = {g:'おばあちゃんの「やりたい」', k:'おまごさんの「やりたい」'};
@@ -283,11 +290,29 @@ function photo(e, cls, voice){
   return '<div class="ph '+(cls||'')+(p.wide&&cls!=='card'?' wide':'')+'"><img src="photos/'+p.f+'" alt="'+esc(e.t)+'のイメージ写真" loading="lazy">'+(voice?'<span class="voice">'+esc(e.v)+'</span>':'')+'</div>';
 }
 
-// 体験（写真のあるものを左右交互に）
-document.getElementById('storyList').innerHTML = EXP.filter(function(e){return e.ph;}).map(function(e){
-  return '<article class="story">'+photo(e,'',true)+'<div class="st"><span class="who">'+WHO[e.who]+'</span><h3>'+esc(e.t)+'</h3><p>'+esc(e.d)+'</p>'+
-  '<div class="price"><b class="yen">年'+e.amt+'万円</b><span>の生前贈与から</span></div><button class="more" type="button" data-exp="'+e.id+'">必要な金額と特典を見る</button></div></article>';
-}).join('');
+// photos/ に置かれていない画像は、文字の枠で表示する
+function boot(){
+  var pending = EXP.filter(function(e){ return e.ph && PHOTOS[e.ph].ai; });
+  var left = pending.length;
+  if(!left) return render();
+  pending.forEach(function(e){
+    var im = new Image();
+    im.onload = function(){ if(--left===0) render(); };
+    im.onerror = function(){ e.ph = null; if(--left===0) render(); };
+    im.src = 'photos/'+PHOTOS[e.ph].f;
+  });
+}
+function render(){
+  // 体験（写真のあるものを左右交互に）
+  document.getElementById('storyList').innerHTML = EXP.filter(function(e){return e.ph;}).map(function(e){
+    return '<article class="story">'+photo(e,'',true)+'<div class="st"><span class="who">'+WHO[e.who]+'</span><h3>'+esc(e.t)+'</h3><p>'+esc(e.d)+'</p>'+
+    '<div class="price"><b class="yen">年'+e.amt+'万円</b><span>の生前贈与から</span></div><button class="more" type="button" data-exp="'+e.id+'">必要な金額と特典を見る</button></div></article>';
+  }).join('');
+  // クレジット（AIで作った画像は1行にまとめる）
+  var usedAI = EXP.some(function(e){ return e.ph && PHOTOS[e.ph].ai; }) || PHOTOS.hero.ai;
+  document.getElementById('credits').innerHTML = Object.keys(PHOTOS).filter(function(k){return !PHOTOS[k].ai;}).map(function(k){var p=PHOTOS[k]; return '<li>Photo by '+esc(p.by)+' on <a href="'+p.u+'" target="_blank" rel="noopener">Unsplash</a></li>';}).join('') + (usedAI ? '<li>このページの写真は、画像生成AIで作成したイメージです。実在の人物ではありません。</li>' : '');
+  results();
+}
 
 // さがす
 var state={budget:110, cats:{}, who:'all', kw:'', sort:'up'};
@@ -314,9 +339,6 @@ document.getElementById('sort').addEventListener('change',function(e){ state.sor
 // しくみの表
 document.getElementById('tbl').innerHTML=[10,30,50,80,110].map(function(m){return '<tr><td class="yen">年'+man(m)+'</td><td class="yen r">'+fmt(div(m))+'円</td><td class="yen r">'+fmt(perk(m))+'円分</td><td class="yen r">'+man(m*5)+'</td></tr>';}).join('');
 
-// クレジット
-document.getElementById('credits').innerHTML = Object.keys(PHOTOS).map(function(k){var p=PHOTOS[k]; return '<li>Photo by '+esc(p.by)+' on <a href="'+p.u+'" target="_blank" rel="noopener">Unsplash</a></li>';}).join('');
-
 // 詳細
 var dlg=document.getElementById('dlg');
 function open(id){
@@ -338,7 +360,7 @@ document.addEventListener('click',function(ev){
   if(t.hasAttribute('data-cat')){ var k=t.getAttribute('data-cat'); state.cats[k]=!state.cats[k]; t.setAttribute('aria-pressed',state.cats[k]); return results(); }
   if(t.hasAttribute('data-who')){ state.who=t.getAttribute('data-who'); document.querySelectorAll('[data-who]').forEach(function(b){b.setAttribute('aria-pressed',b===t);}); results(); }
 });
-setBudget(110);
+boot();
 </script>
 </body>
 </html>
